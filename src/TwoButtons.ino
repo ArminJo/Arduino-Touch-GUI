@@ -1,5 +1,5 @@
 /*
- * TouchGui.ino
+ * TwoButtons.ino
  *
  *  Created on: 31.01.2012
  *      Author: Armin Joachimsmeyer
@@ -73,17 +73,18 @@ TouchButtonAutorepeat TouchButtonCaptionAutorepeat;
 TouchButton TouchButtonBackground;
 
 // Callback touch handler
-void doButtons(TouchButton * const aTheTochedButton, int aValue);
+void doButtons(TouchButton * const aTheTochedButton, int16_t aValue);
 
 void setup() {
 
-	//Serial.begin(115200);
+//	Serial.begin(115200);
 	//init display
 	TFTDisplay.init(4); //spi-clk = Fcpu/4
-	TFTDisplay.clear(BACKGROUND_COLOR);
+	TFTDisplay.clearDisplay( BACKGROUND_COLOR);
 
 	//init touch controller
 	TouchPanel.init();
+
 	//touch-panel calibration
 	TouchPanel.service();
 	if (TouchPanel.getPressure() > 5) {
@@ -97,6 +98,8 @@ void setup() {
 	int8_t tErrorValue = 0;
 	tErrorValue += TouchButtonCaptionAutorepeat.initButton(20, 20, BUTTON_WIDTH, BUTTON_HEIGHT, "Caption", 2,
 			TOUCHBUTTON_DEFAULT_TOUCH_BORDER, TOUCHBUTTON_DEFAULT_COLOR, COLOR_BLUE, COLOR_BLUE, &doButtons);
+    Serial.println("7");
+
 	TouchButtonCaptionAutorepeat.setButtonAutorepeatTiming(1000, 200, 23000, 50, &StartNewTouch);
 	tErrorValue += TouchButtonBackground.initButton(20,
 			TouchButtonCaptionAutorepeat.getPositionYBottom() + BUTTON_SPACING, BUTTON_WIDTH, BUTTON_HEIGHT,
@@ -107,22 +110,21 @@ void setup() {
 
 	if (tErrorValue != 0) {
 		// Show Error
-		TFTDisplay.clear(BACKGROUND_COLOR);
+		TFTDisplay.clearDisplay(BACKGROUND_COLOR);
 		TFTDisplay.drawText(40, 100, (char *) "Error on button rendering", 2, COLOR_RED, BACKGROUND_COLOR);
 		TFTDisplay.drawText(40, 120, tErrorValue, 2, COLOR_RED, BACKGROUND_COLOR);
 		delay(5000);
 	}
+
 	// activate internal pullups for twi.
 	digitalWrite(SDA, 1);
 	digitalWrite(SCL, 1);
 	i2c_init(); //Set speed
-	setRTCTime(30, 19, 19, 6, 28, 4, 2012); //08:00:00 24.12.2011 //sec, min, hour, ,dayOfWeek, day, month, year
-
+	setRTCTime(30, 19, 19, 6, 8, 3, 2018); //08:00:00 24.12.2011 //sec, min, hour, ,dayOfWeek, day, month, year
 }
 
 void loop() {
 	bool tGuiTouched = false;
-
 	//service routine for touch panel
 	TouchPanel.service();
 #ifdef DEBUG
@@ -146,7 +148,7 @@ void loop() {
 #endif
 }
 
-void doButtons(TouchButton * const aTheTouchedButton, int aValue) {
+void doButtons(TouchButton * const aTheTouchedButton, int16_t aValue) {
 	printRGB(aValue, 10, 200);
 	if (aTheTouchedButton == &TouchButtonCaptionAutorepeat) {
 		aValue += CAPTION_COLOR_INCREMENT;

@@ -68,7 +68,7 @@
 #endif
 
 
-extern const prog_uint8_t font_PGM[];
+extern const uint8_t font_PGM[];
 
 
 #endif //fonts_h

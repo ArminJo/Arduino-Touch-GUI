@@ -44,7 +44,7 @@ Chart::~Chart() {
 //makes no sense on Arduino
 }
 
-Chart::Chart() {
+Chart::Chart() { // @suppress("Class members should be properly initialized")
 	mChartBackgroundColor = CHART_DEFAULT_BACKGROUND_COLOR;
 	mAxesColor = CHART_DEFAULT_AXES_COLOR;
 	mGridColor = CHART_DEFAULT_GRID_COLOR;
@@ -167,7 +167,7 @@ uint8_t Chart::drawChart(void) {
 }
 
 void Chart::drawGrid(void) {
-	if (!mFlags & (1 << CHART_HAS_GRID)) {
+	if (!(mFlags & (1 << CHART_HAS_GRID))) {
 		return;
 	}
 	uint16_t tOffset;
@@ -210,7 +210,7 @@ uint8_t Chart::drawXAxis(bool aClearLabelsBefore) {
 	if (mFlags & (1 << CHART_X_LABEL_USED)) {
 		uint16_t tOffset;
 		uint16_t tNumberYTop = mPositionY + mAxesSize + 1;
-		if (!mFlags & (1 << CHART_HAS_GRID)) {
+		if (!(mFlags & (1 << CHART_HAS_GRID))) {
 			tNumberYTop += mAxesSize;
 			// draw indicators
 			for (tOffset = 0; tOffset <= mWidthX; tOffset += mGridXResolution) {
@@ -315,7 +315,7 @@ uint8_t Chart::drawYAxis(bool aClearLabelsBefore) {
 	if (mFlags & (1 << CHART_Y_LABEL_USED)) {
 		uint16_t tOffset;
 		uint16_t tNumberXLeft = mPositionX - mAxesSize - 1;
-		if (!mFlags & (1 << CHART_HAS_GRID)) {
+		if (!(mFlags & (1 << CHART_HAS_GRID))) {
 			tNumberXLeft -= mAxesSize;
 			// draw indicators
 			for (tOffset = 0; tOffset <= mHeightY; tOffset += mGridYResolution) {

@@ -46,7 +46,7 @@ TouchButton::~TouchButton() {
 	// makes no sense on Arduino
 }
 
-TouchButton::TouchButton() {
+TouchButton::TouchButton() { // @suppress("Class members should be properly initialized")
 	mTouchBorder = sDefaultTouchBorder;
 	mButtonColor = sDefaultButtonColor;
 	mCaptionColor = sDefaultCaptionColor;
